@@ -13,7 +13,7 @@ The files in `supabase/` define a shared, moderated listings and quote enquiry b
 3. Deploy `supabase/functions/submit-enquiry/index.ts` as an Edge Function. Configure `PILOT_INBOX_EMAIL`, `RESEND_API_KEY`, and a verified `RESEND_FROM_EMAIL` as function secrets. The function stores validated enquiries and forwards them to the configured inbox. Use the service-role key only as a Supabase function secret; never place it in the website.
 4. Add the Supabase project URL and anon/public key to `config.js`, which sets `window.SFL_CONFIG`. Add the business's public name and privacy contact email there too. The anon key is public; row-level security is the security boundary. Never put a service-role key in the website.
 5. Set Supabase Auth's site URL and allowed redirect URLs to the deployed Pages URL. Enable email magic-link sign-in.
-6. Add verified pilot suppliers and transporters. Keep profiles pending until contact details, business/identity information, vehicle capacity, and service areas are checked.
+6. Review new product and transport rows in Supabase before setting their status to `active`. Verify supplier/provider contact details, business/identity information, vehicle capacity, and service areas. Provider phone numbers are not exposed through public profile reads.
 7. Add a CAPTCHA or equivalent abuse control before promoting the enquiry form broadly. The function has only basic per-email throttling and a honeypot; those are not robust spam protection.
 8. Test on a fresh phone/browser: browse approved listings, sign in as a supplier, submit a listing, verify it remains pending, submit a buyer enquiry, confirm only the configured inbox receives it, and confirm anonymous visitors cannot read personal details or transporter phone numbers.
 9. Replace illustrative inventory and transport profiles with verified, consented information before promoting the marketplace as live.
@@ -24,8 +24,9 @@ The files in `supabase/` define a shared, moderated listings and quote enquiry b
 - User accounts through Supabase email sign-in.
 - Quote requests stored privately and forwarded to the configured business inbox.
 - Public browsing of approved listings.
+- Required acceptance of the privacy notice and pilot terms on configured account and enquiry flows.
 
-No payments, automatic transporter matching, confirmed orders, tracking, proof of delivery, in-app messaging, reviews, dispute handling, or automated identity verification are included. Sellers and transporters must confirm availability, total cost, delivery terms, and responsibilities directly. Publish clear terms and a privacy notice before collecting customer information.
+No payments, automatic transporter matching, confirmed orders, tracking, proof of delivery, in-app messaging, reviews, dispute handling, or automated identity verification are included. Sellers and transporters must confirm availability, total cost, delivery terms, and responsibilities directly. Review the draft `terms.html` and `privacy.html`, add the correct legal/business identity, decide and publish retention practices, and have the notices reviewed before collecting customer information.
 
 ## Deployment
 
