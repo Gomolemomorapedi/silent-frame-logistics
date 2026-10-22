@@ -58,12 +58,12 @@
   const authBox = document.createElement("div");
   authBox.className = "formbox";
   authBox.style.marginBottom = "12px";
-  authBox.innerHTML = '<label for="pilotEmail">Supplier sign-in</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input class="control" id="pilotEmail" type="email" autocomplete="email" placeholder="Business email address" style="flex:1;min-width:220px"><button class="btn" id="pilotSignIn" type="button">Email me a sign-in link</button><button class="btn light" id="pilotSignOut" type="button" hidden>Sign out</button></div><p class="localnote" id="pilotAuthStatus" aria-live="polite">Sign in to submit a listing for review.</p>';
+  authBox.innerHTML = '<label for="pilotEmail">Supplier / transporter sign-in</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input class="control" id="pilotEmail" type="email" autocomplete="email" placeholder="Business email address" style="flex:1;min-width:220px"><button class="btn" id="pilotSignIn" type="button">Email me a sign-in link</button><button class="btn light" id="pilotSignOut" type="button" hidden>Sign out</button></div><label style="display:flex;gap:8px;align-items:flex-start;margin:12px 0"><input type="checkbox" id="pilotPrivacyAccepted" style="width:auto;margin-top:3px">I agree to the <a href="./privacy.html" target="_blank" rel="noopener">privacy notice</a> and <a href="./terms.html" target="_blank" rel="noopener">pilot terms</a>.</label><p class="localnote" id="pilotAuthStatus" aria-live="polite">Sign in to submit a listing for review.</p>';
   document.querySelector("#listing")?.before(authBox);
   const providerJoin = document.createElement("form");
   providerJoin.className = "formbox";
   providerJoin.style.marginTop = "14px";
-  providerJoin.innerHTML = '<h3>Register a transport vehicle</h3><div class="fields"><div><label for="carrierName">Business or provider name</label><input class="control" id="carrierName" name="business_name" maxlength="100" required></div><div><label for="vehicleType">Vehicle type</label><input class="control" id="vehicleType" name="vehicle_type" maxlength="80" placeholder="Bakkie, flatbed, light truck" required></div><div><label for="capacityKg">Capacity (kg)</label><input class="control" id="capacityKg" name="capacity_kg" type="number" min="1" required></div><div><label for="carrierPhone">Contact phone</label><input class="control" id="carrierPhone" name="contact_phone" type="tel" minlength="7" maxlength="30" required></div><div class="wide"><label for="serviceAreas">West Rand service areas</label><input class="control" id="serviceAreas" name="service_areas" maxlength="250" placeholder="Krugersdorp, Randfontein" required></div></div><button class="btn" type="submit">Submit vehicle for review</button><p class="localnote" id="carrierStatus" aria-live="polite">Provider details stay private until the pilot team reviews your profile.</p>';
+  providerJoin.innerHTML = '<h3>Register a transport vehicle</h3><div class="fields"><div><label for="carrierName">Business or provider name</label><input class="control" id="carrierName" name="business_name" maxlength="100" required></div><div><label for="vehicleType">Vehicle type</label><input class="control" id="vehicleType" name="vehicle_type" maxlength="80" placeholder="Bakkie, flatbed, light truck" required></div><div><label for="capacityKg">Capacity (kg)</label><input class="control" id="capacityKg" name="capacity_kg" type="number" min="1" required></div><div><label for="carrierPhone">Contact phone</label><input class="control" id="carrierPhone" name="contact_phone" type="tel" minlength="7" maxlength="30" required></div><div class="wide"><label for="serviceAreas">West Rand service areas</label><input class="control" id="serviceAreas" name="service_areas" maxlength="250" placeholder="Krugersdorp, Randfontein" required></div></div><label style="display:flex;gap:8px;align-items:flex-start;margin:12px 0"><input type="checkbox" name="privacyAccepted" required style="width:auto;margin-top:3px">I agree to the <a href="./privacy.html" target="_blank" rel="noopener">privacy notice</a> and <a href="./terms.html" target="_blank" rel="noopener">pilot terms</a>.</label><button class="btn" type="submit">Submit vehicle for review</button><p class="localnote" id="carrierStatus" aria-live="polite">Provider details stay private until the pilot team reviews your profile.</p>';
   document.querySelector("#providers")?.after(providerJoin);
   const authStatus = document.querySelector("#pilotAuthStatus");
   const listingButton = document.querySelector('#listing button[type="submit"]');
@@ -121,6 +121,7 @@
       document.querySelector("#pilotSignIn").onclick = async () => {
         const email = document.querySelector("#pilotEmail").value.trim();
         if (!email) { authStatus.textContent = "Enter your business email address first."; return; }
+        if (!document.querySelector("#pilotPrivacyAccepted").checked) { authStatus.textContent = "Accept the privacy notice and pilot terms before signing in."; return; }
         authStatus.textContent = "Sending a secure sign-in link…";
         const { error: signInError } = await db.auth.signInWithOtp({
           email,
@@ -195,7 +196,8 @@
               name: values.name, email: values.email, phone: values.phone,
               quantity: values.requestQuantity, collection_area: values.collectionArea,
               destination: values.destination, preferred_date: values.preferredDate,
-              message: values.message, company_website: values.companyWebsite
+              message: values.message, privacy_accepted: values.privacyAccepted === "on",
+              company_website: values.companyWebsite
             }
           });
           if (error) throw error;
@@ -207,7 +209,7 @@
       };
 
       const extraFields = document.createElement("div");
-      extraFields.innerHTML = '<label for="requestQuantity">Quantity or load details</label><input class="control" id="requestQuantity" name="requestQuantity" maxlength="100" placeholder="For example, 20 bags of cement"><label for="collectionArea">Collection area</label><input class="control" id="collectionArea" name="collectionArea" maxlength="100" placeholder="West Rand area"><label for="destination">Delivery destination</label><input class="control" id="destination" name="destination" maxlength="250" placeholder="Suburb or town"><label for="preferredDate">Preferred date</label><input class="control" id="preferredDate" name="preferredDate" type="date"><label for="requestMessage">Anything else we should know?</label><textarea class="control" id="requestMessage" name="message" maxlength="2000" rows="3"></textarea><input name="companyWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px">';
+      extraFields.innerHTML = '<label for="requestQuantity">Quantity or load details</label><input class="control" id="requestQuantity" name="requestQuantity" maxlength="100" placeholder="For example, 20 bags of cement"><label for="collectionArea">Collection area</label><input class="control" id="collectionArea" name="collectionArea" maxlength="100" placeholder="West Rand area"><label for="destination">Delivery destination</label><input class="control" id="destination" name="destination" maxlength="250" placeholder="Suburb or town"><label for="preferredDate">Preferred date</label><input class="control" id="preferredDate" name="preferredDate" type="date"><label for="requestMessage">Anything else we should know?</label><textarea class="control" id="requestMessage" name="message" maxlength="2000" rows="3"></textarea><label style="display:flex;gap:8px;align-items:flex-start;margin:12px 0"><input type="checkbox" name="privacyAccepted" required style="width:auto;margin-top:3px">I agree to the <a href="./privacy.html" target="_blank" rel="noopener">privacy notice</a> and <a href="./terms.html" target="_blank" rel="noopener">pilot terms</a>.</label><input name="companyWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px">';
       document.querySelector("#contact button[type='submit']").before(extraFields);
       const ready = await refreshProducts();
       setRequestsReady(ready);
