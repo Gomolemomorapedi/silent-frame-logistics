@@ -1,0 +1,32 @@
+# Silent Frame Logistics pilot setup
+
+## Current state
+
+The published site is a static preview. It displays illustrative listings and the supplier preview saves only in the visitor's browser. No enquiries are currently delivered. Sample stock, prices, supplier names, and transport profiles are not verified offers.
+
+The files in `supabase/` define a shared, moderated listings and quote enquiry backend. It is not active until the owner creates a Supabase project and provides a public project URL/key plus a real business inbox. Never commit a service-role key.
+
+## Pilot launch steps
+
+1. Create a Supabase project in a region suitable for South African users. Keep its database credentials private.
+2. Run `supabase/schema.sql` in the project's SQL editor. This enables row-level security and keeps enquiries private.
+3. Deploy `supabase/functions/submit-enquiry/index.ts` as an Edge Function. Configure `PILOT_INBOX_EMAIL`, `RESEND_API_KEY`, and a verified `RESEND_FROM_EMAIL` as function secrets. The function stores validated enquiries and forwards them to the configured inbox. Use the service-role key only as a Supabase function secret; never place it in the website.
+4. Add the Supabase project URL and anon/public key to `config.js`, which sets `window.SFL_CONFIG`. Add the business's public name and privacy contact email there too. The anon key is public; row-level security is the security boundary. Never put a service-role key in the website.
+5. Set Supabase Auth's site URL and allowed redirect URLs to the deployed Pages URL. Enable email magic-link sign-in.
+6. Add verified pilot suppliers and transporters. Keep profiles pending until contact details, business/identity information, vehicle capacity, and service areas are checked.
+7. Add a CAPTCHA or equivalent abuse control before promoting the enquiry form broadly. The function has only basic per-email throttling and a honeypot; those are not robust spam protection.
+8. Test on a fresh phone/browser: browse approved listings, sign in as a supplier, submit a listing, verify it remains pending, submit a buyer enquiry, confirm only the configured inbox receives it, and confirm anonymous visitors cannot read personal details or transporter phone numbers.
+9. Replace illustrative inventory and transport profiles with verified, consented information before promoting the marketplace as live.
+
+## Pilot scope
+
+- Shared products after the backend is configured; new listings start pending moderation.
+- User accounts through Supabase email sign-in.
+- Quote requests stored privately and forwarded to the configured business inbox.
+- Public browsing of approved listings.
+
+No payments, automatic transporter matching, confirmed orders, tracking, proof of delivery, in-app messaging, reviews, dispute handling, or automated identity verification are included. Sellers and transporters must confirm availability, total cost, delivery terms, and responsibilities directly. Publish clear terms and a privacy notice before collecting customer information.
+
+## Deployment
+
+GitHub Pages publishes the static site from `main`. The database and Edge Function deploy separately in Supabase. A successful Pages build does not mean the backend is configured; test the enquiry journey end to end before launch.
