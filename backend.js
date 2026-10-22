@@ -63,13 +63,15 @@
   const providerJoin = document.createElement("form");
   providerJoin.className = "formbox";
   providerJoin.style.marginTop = "14px";
-  providerJoin.innerHTML = '<h3>Register a transport vehicle</h3><div class="fields"><div><label for="carrierName">Business or provider name</label><input class="control" id="carrierName" name="business_name" maxlength="100" required></div><div><label for="vehicleType">Vehicle type</label><input class="control" id="vehicleType" name="vehicle_type" maxlength="80" placeholder="Bakkie, flatbed, light truck" required></div><div><label for="capacityKg">Capacity (kg)</label><input class="control" id="capacityKg" name="capacity_kg" type="number" min="1" required></div><div><label for="carrierPhone">Contact phone</label><input class="control" id="carrierPhone" name="contact_phone" type="tel" minlength="7" maxlength="30" required></div><div class="wide"><label for="serviceAreas">Service areas (hold Ctrl to choose more than one)</label><select class="control" id="serviceAreas" name="service_areas" multiple required><option>Krugersdorp</option><option>Randfontein</option><option>Roodepoort</option><option>Carletonville</option><option>Other West Rand</option></select></div></div><button class="btn" type="submit">Submit vehicle for review</button><p class="localnote" id="carrierStatus" aria-live="polite">Provider details stay private until the pilot team approves your profile.</p>';
+  providerJoin.innerHTML = '<h3>Register a transport vehicle</h3><div class="fields"><div><label for="carrierName">Business or provider name</label><input class="control" id="carrierName" name="business_name" maxlength="100" required></div><div><label for="vehicleType">Vehicle type</label><input class="control" id="vehicleType" name="vehicle_type" maxlength="80" placeholder="Bakkie, flatbed, light truck" required></div><div><label for="capacityKg">Capacity (kg)</label><input class="control" id="capacityKg" name="capacity_kg" type="number" min="1" required></div><div><label for="carrierPhone">Contact phone</label><input class="control" id="carrierPhone" name="contact_phone" type="tel" minlength="7" maxlength="30" required></div><div class="wide"><label for="serviceAreas">West Rand service areas</label><input class="control" id="serviceAreas" name="service_areas" maxlength="250" placeholder="Krugersdorp, Randfontein" required></div></div><button class="btn" type="submit">Submit vehicle for review</button><p class="localnote" id="carrierStatus" aria-live="polite">Provider details stay private until the pilot team reviews your profile.</p>';
   document.querySelector("#providers")?.after(providerJoin);
   const authStatus = document.querySelector("#pilotAuthStatus");
   const listingButton = document.querySelector('#listing button[type="submit"]');
   if (listingButton) listingButton.textContent = "Submit listing for review";
   const privacyText = document.querySelector(".privacy");
   if (privacyText) privacyText.innerHTML = 'Your details will be sent to the pilot team to respond to your request. Read the <a href="./privacy.html" target="_blank" rel="noopener">privacy notice</a>.';
+  const modalBox = document.querySelector(".modalbox");
+  if (modalBox) { modalBox.style.maxHeight = "calc(100vh - 30px)"; modalBox.style.overflowY = "auto"; }
 
   const refreshProducts = async () => {
     try {
@@ -161,7 +163,7 @@
           const { data: auth } = await db.auth.getUser();
           if (!auth.user) throw new Error("Sign in with your provider email before registering a vehicle.");
           const values = Object.fromEntries(new FormData(form));
-          const areas = Array.from(form.querySelector("#serviceAreas").selectedOptions).map(option => option.value);
+          const areas = values.service_areas.split(",").map(area => area.trim()).filter(Boolean).slice(0, 10);
           const { error: saveError } = await db.from("transporters").insert({
             owner_id: auth.user.id, business_name: values.business_name,
             vehicle_type: values.vehicle_type, capacity_kg: Number(values.capacity_kg),
