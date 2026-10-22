@@ -80,6 +80,7 @@ create table if not exists public.enquiries (
   destination text not null default '' check (char_length(destination) <= 250),
   preferred_date date,
   message text not null default '' check (char_length(message) <= 2000),
+  privacy_accepted boolean not null default false,
   status text not null default 'new' check (status in ('new','contacted','closed','spam')),
   created_at timestamptz not null default now(),
   check ((kind = 'product' and product_id is not null) or kind = 'delivery')
