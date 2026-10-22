@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Pilot terms · Silent Frame Logistics</title>
+  <style>
+    body{margin:0;background:#f5f4ee;color:#17251f;font:16px/1.65 system-ui,sans-serif}.wrap{max-width:760px;margin:48px auto;padding:0 22px}h1,h2{line-height:1.15;letter-spacing:-.03em}h1{font-size:clamp(32px,6vw,48px)}.note{background:#fff;border:1px solid #dce2da;border-radius:14px;padding:18px}a{color:#1f684e}
+  </style>
+</head>
+<body><main class="wrap">
+  <p><a href="./">← Silent Frame Logistics</a></p>
+  <h1>West Rand pilot terms</h1>
+  <p id="draft"><strong>Draft terms:</strong> the business operator must add its correct legal/business name and contact details, then review these terms before public use.</p>
+  <h2>What the pilot does</h2>
+  <p>Silent Frame Logistics is a marketplace preview intended to introduce buyers, product suppliers, and transport providers. A request for a quote is not an order, confirmed booking, or promise that goods, a vehicle, a price, or a delivery time are available.</p>
+  <h2>Check every arrangement</h2>
+  <p>Buyers, suppliers, and transporters must agree directly on stock, specifications, collection and delivery addresses, vehicle suitability, total charges, timing, payment, insurance, cancellation, and responsibility for loss or damage. Goods charges and transport charges are separate unless the parties expressly agree otherwise in writing.</p>
+  <h2>Listings and review</h2>
+  <p>Listings submitted through the pilot are reviewed before publication. A review is not a guarantee of a supplier's identity, product quality, stock, licence, insurance, vehicle condition, or service performance. Report inaccurate or unsafe listings to the operator.</p>
+  <h2>Payments and disputes</h2>
+  <p>The pilot does not collect payments, provide escrow, arrange insurance, or decide disputes. Do not send payment information through the website. Keep written records of any separate agreement with a supplier or transporter.</p>
+  <h2>Contact</h2>
+  <p id="contact">The operator must publish a monitored contact address before accepting pilot requests.</p>
+  <div class="note">These pilot terms are a plain-language launch draft, not legal advice. Have the business owner review them for the actual service, business details, consumer obligations, privacy notice, and South African law.</div>
+</main><script src="./config.js"></script><script>
+  const c = window.SFL_CONFIG || {};
+  if (c.businessName && c.contactEmail) {
+    document.querySelector("#draft").textContent = "Operator: " + c.businessName + ". These pilot terms apply to the Silent Frame Logistics introduction service.";
+    const link = document.createElement("a");
+    link.href = "mailto:" + c.contactEmail;
+    link.textContent = c.contactEmail;
+    document.querySelector("#contact").replaceChildren("Contact the operator: ", link);
+  }
+</script></body></html>
