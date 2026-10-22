@@ -22,6 +22,8 @@ Deno.serve(async (req) => {
     const name = clean(body.name, 100);
     const email = clean(body.email, 254).toLowerCase();
     const phone = clean(body.phone, 30);
+    if (body.privacy_accepted !== true)
+      return reply(400, { error: "Please accept the privacy notice before sending your request." });
     if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 7)
       return reply(400, { error: "Enter a name, valid email address and phone number." });
     const productId = clean(body.product_id, 50);
@@ -69,6 +71,7 @@ Deno.serve(async (req) => {
       collection_area: clean(body.collection_area, 100),
       destination: clean(body.destination, 250),
       preferred_date: /^\d{4}-\d{2}-\d{2}$/.test(clean(body.preferred_date, 10)) ? clean(body.preferred_date, 10) : null,
+      privacy_accepted: true,
       message: clean(body.message, 2000)
     };
     const { data: saved, error } = await db.from("enquiries").insert(record).select("id").single();
