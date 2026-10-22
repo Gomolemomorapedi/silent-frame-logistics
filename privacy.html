@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Privacy notice · Silent Frame Logistics</title>
+  <style>
+    body{margin:0;background:#f5f4ee;color:#17251f;font:16px/1.65 system-ui,sans-serif}.wrap{max-width:760px;margin:48px auto;padding:0 22px}h1,h2{line-height:1.15;letter-spacing:-.03em}h1{font-size:clamp(32px,6vw,48px)}.note{background:#fff;border:1px solid #dce2da;border-radius:14px;padding:18px}a{color:#1f684e}
+  </style>
+</head>
+<body><main class="wrap">
+  <p><a href="./">← Silent Frame Logistics</a></p>
+  <h1>Privacy notice</h1>
+  <p id="draft"><strong>Pilot draft:</strong> the marketplace is being prepared for a West Rand pilot. The operator must add its legal/business name and a monitored privacy contact before collecting real customer information.</p>
+  <h2>Information collected</h2>
+  <p>If the live enquiry service is configured, it receives your name, email address, phone number, request details, and approximate collection/delivery areas. Supplier sign-in uses your email address. Do not submit identity documents or payment details through this pilot.</p>
+  <h2>How information is used</h2>
+  <p>Enquiry details are stored in the marketplace database and forwarded to the pilot operator so the operator can respond. They are not displayed publicly. Supplier listing details are reviewed before appearing in public search.</p>
+  <h2>Storage and contact</h2>
+  <p>The pilot operator must set and publish a retention period and access controls before launch. Until those are completed, do not use the site for sensitive or urgent requests. The privacy contact is <span id="privacyContact">not configured yet</span>.</p>
+  <div class="note">This is a launch draft, not legal advice. The business owner should review it against the actual data flows and South African privacy requirements before enabling real enquiries.</div>
+</main><script src="./config.js"></script><script>
+  const c = window.SFL_CONFIG || {};
+  if (c.businessName && c.contactEmail) {
+    document.querySelector("#draft").textContent = "Operator: " + c.businessName + ". Contact the operator with questions about this notice before submitting personal information.";
+    const link = document.createElement("a");
+    link.href = "mailto:" + c.contactEmail;
+    link.textContent = c.contactEmail;
+    document.querySelector("#privacyContact").replaceWith(link);
+  }
+</script></body></html>
