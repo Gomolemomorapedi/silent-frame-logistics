@@ -4,6 +4,12 @@
 
 The GitHub Pages site and optional Supabase pilot are a useful starting point, but they are not yet a transport booking marketplace.
 
+## Confirmed business role: independent introducer
+
+Silent Frame Logistics is intended to introduce customers and businesses to independent transport providers; it does not own or operate vehicles or itself carry goods. Keep the first pilot limited to introductions. Before a referral, disclose what information will be shared and obtain any required consent. The customer and provider should agree their service, price, payment and responsibilities directly in writing unless an actual separate written arrangement says otherwise. Do not imply the company guarantees the transporter, provides insurance, holds customer funds, or handles disputes unless those services are deliberately added and contractually supported.
+
+The proposed 15% introduction fee is not yet a settled operating rule. Before using it, decide in writing who owes it, whether it is based on the gross agreed fare, when it is earned, how it will be collected, and how cancellations, refunds, chargebacks, taxes and disputes change it. A fee model alone does not provide payment splitting; do not enable checkout until the provider and legal arrangements support the actual flow.
+
 The current Supabase schema supports profiles, supplier products, transporter profile listings, and private enquiries. The current transporter form captures business name, vehicle type, payload, phone, and service area. It does not collect vehicle-use evidence, insurance details, permit information, or verification review history. A profile marked active is therefore a listing approval, not proof of safety or legal eligibility.
 
 There are no live transport job records, offers, route calculations, configurable fare rules, booking status transitions, commission ledger, card checkout, split settlement, refund workflow, or transporter payout records. The pilot uses email magic-link sign-in; username/password sign-in is a separate authentication change. None of these gaps should be concealed by labels or success messages.
