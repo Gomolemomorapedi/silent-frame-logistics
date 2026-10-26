@@ -81,7 +81,7 @@ test("transport request explains preview behavior and gathers the core quote det
 test("introducer role and proposed referral fee are disclosed in the public terms", () => {
   const terms = read("terms.html");
   assert.match(terms, /independent introducer/i);
-  assert.match(terms, /Any introduction fee.*agreed in writing/i);
+  assert.match(terms, /Any introduction fee.*clear written agreement/i);
   assert.match(terms, /does not collect transport payments/i);
 });
 
