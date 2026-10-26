@@ -67,11 +67,22 @@ test("transport request explains preview behavior and gathers the core quote det
     'name="privacyAccepted" required',
     'href="./privacy.html"',
     'href="./terms.html"',
-    "No booking or price is confirmed",
+    "No introduction, quote, booking, contract or price is confirmed",
     "does not send or store it",
     "Provider registration is not open in this preview",
-    "Do not send vehicle documents or sensitive details through this site"
+    "Do not send vehicle documents or sensitive details through this site",
+    "independent introducer",
+    "introducer. The transporter, not Silent Frame Logistics, provides the transport service",
+    "proposed introduction fee",
+    "who pays, what the fee applies to, when it is earned"
   ]) assert.ok(html.includes(phrase), `index.html includes ${phrase}`);
+});
+
+test("introducer role and proposed referral fee are disclosed in the public terms", () => {
+  const terms = read("terms.html");
+  assert.match(terms, /independent introducer/i);
+  assert.match(terms, /Any introduction fee.*agreed in writing/i);
+  assert.match(terms, /do not collect transport payments/i);
 });
 
 test("shared enquiry flow stays server-side and config contains no payment credentials", () => {
