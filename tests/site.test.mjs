@@ -64,6 +64,7 @@ test("transport request explains preview behavior and gathers the core quote det
     'name="preferredDate"',
     'name="stops"',
     'id="contactEmail"',
+    'name="privacyAccepted" required',
     'href="./privacy.html"',
     'href="./terms.html"',
     "No booking or price is confirmed",
