@@ -68,7 +68,7 @@ test("transport request explains preview behavior and gathers the core quote det
     'href="./privacy.html"',
     'href="./terms.html"',
     "No booking or price is confirmed",
-    "does not send or store it"
+    "does not send or store it",\n    "Provider registration is not open in this preview",\n    "Do not send vehicle documents or sensitive details through this site"
   ]) assert.ok(html.includes(phrase), `index.html includes ${phrase}`);
 });
 
