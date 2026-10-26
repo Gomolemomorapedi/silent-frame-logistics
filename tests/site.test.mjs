@@ -74,7 +74,11 @@ test("transport request explains preview behavior and gathers the core quote det
     "Silent Frame Logistics is an introducer.",
     "introducer. The transporter, not Silent Frame Logistics, provides the transport service",
     "Proposed introduction fee",
-    "who pays, what the fee applies to, when it is earned"
+    "who pays, what the fee applies to, when it is earned",
+    "How an introduction should work",
+    "Customer and transporter set terms.",
+    "does not send an enquiry or make an introduction",
+    "Preview introduction enquiry"
   ]) assert.ok(html.includes(phrase), `index.html includes ${phrase}`);
 });
 
