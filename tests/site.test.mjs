@@ -34,10 +34,14 @@ test("local links, scripts and page anchors resolve", () => {
       const value = match[1];
       if (/^(?:https?:|mailto:|tel:|data:|javascript:)/i.test(value)) continue;
       const [pathPart, hashPart] = value.split("#", 2);
-      if (hashPart) assert.ok(ids.has(hashPart), `${file} has missing #${hashPart}`);
-      if (!pathPart) continue;
       const localPath = pathPart.replace(/^\.\//, "");
-      assert.ok(existsSync(new URL(`../${localPath}`, import.meta.url)), `${file} links to missing ${localPath}`);
+      if (pathPart) assert.ok(existsSync(new URL(`../${localPath}`, import.meta.url)), `${file} links to missing ${localPath}`);
+      if (hashPart) {
+        const targetHtml = pathPart ? read(localPath) : html;
+        const targetMarkup = cleanMarkup(targetHtml);
+        const targetIds = new Set([...targetMarkup.matchAll(/\bid="([^"]+)"/g)].map((item) => item[1]));
+        assert.ok(targetIds.has(hashPart), `${file} has missing #${hashPart} in ${localPath || file}`);
+      }
     }
     for (const script of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
       if (/\bsrc=/i.test(script[1]) || !script[2].trim()) continue;
@@ -62,7 +66,7 @@ test("transport request explains preview behavior and gathers the core quote det
     'id="contactEmail"',
     'href="./privacy.html"',
     'href="./terms.html"',
-    "does not confirm a booking or price",
+    "No booking or price is confirmed",
     "does not send or store it"
   ]) assert.ok(html.includes(phrase), `index.html includes ${phrase}`);
 });
