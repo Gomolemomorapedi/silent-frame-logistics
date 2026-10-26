@@ -82,6 +82,13 @@ test("transport request explains preview behavior and gathers the core quote det
   ]) assert.ok(html.includes(phrase), `index.html includes ${phrase}`);
 });
 
+test("privacy notice describes transporter interest data and consent before sharing", () => {
+  const privacy = read("privacy.html");
+  assert.match(privacy, /business\/provider name, vehicle type, stated capacity, contact phone number and service areas/i);
+  assert.match(privacy, /does not automatically forward a request to a transporter/i);
+  assert.match(privacy, /obtain the required consent/i);
+});
+
 test("introducer role and proposed referral fee are disclosed in the public terms", () => {
   const terms = read("terms.html");
   assert.match(terms, /independent introducer/i);
